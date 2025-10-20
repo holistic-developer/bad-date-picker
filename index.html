@@ -1,13 +1,185 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>bad-date-picker</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+</head>
+<body>
+<select id="selector" onchange="selected.innerHTML = this.value">
+    <option>Select a date</option>
+</select>
+<p style="font-size: small">(For your convenience the dates are sorted alphabetically)</p>
+<p>Selected date: <span id="selected"></span></p>
+
+<script>
+    console.log("Do check the source! It is not minified and all in one file for your convenience.");
+	const oneDigitToString = (number) => {
+		o = number % 10;
+		switch (o) {
+			case 0:
+				return '';
+			case 1:
+				return 'one';
+			case 2:
+				return 'two';
+			case 3:
+				return 'three';
+			case 4:
+				return 'four';
+			case 5:
+				return 'five';
+			case 6:
+				return 'six';
+			case 7:
+				return 'seven';
+			case 8:
+				return 'eight';
+			case 9:
+				return 'nine';
+		}
+	}
+
+	const tensToString = (number) => {
+		const t = Math.floor(number / 10);
+		switch (t) {
+			case 0:
+				return '';
+			case 2:
+				return 'twenty';
+			case 3:
+				return 'thirty';
+			case 4:
+				return 'forty';
+			case 5:
+				return 'fifty';
+			case 6:
+				return 'sixty';
+			case 7:
+				return 'seventy';
+			case 8:
+				return 'eighty';
+			case 9:
+				return 'ninety';
+		}
+	}
+
+	const twoDigitToString = (number) => {
+		switch (number) {
+			case 0:
+				return 'zero';
+			case 10:
+				return 'ten';
+			case 11:
+				return 'eleven';
+			case 12:
+				return 'twelve';
+			case 13:
+				return 'thirteen';
+			case 14:
+			case 15:
+			case 16:
+			case 17:
+			case 18:
+			case 19:
+				return oneDigitToString(number) + 'teen';
+			default:
+				const tensString = tensToString(number);
+				const onesString = oneDigitToString(number);
+				return tensString + (onesString && tensString ? '-' : '') + onesString;
+		}
+	}
+
+	const yearToString = (d) => {
+		switch (d.getFullYear()) {
+			case '1900':
+				return 'nineteen hundred';
+			case '2000':
+				return 'two thousand';
+			case '2100':
+				return 'twenty-one hundred'; // something else will probably be broken before then
+			default: {
+				const yearStr = d.getFullYear().toString();
+				const firstTwo = parseInt(yearStr.slice(0, 2));
+				const lastTwo = parseInt(yearStr.slice(2, 4));
+				const filler = (0 < lastTwo && lastTwo < 10) ? ' oh ' : ' ';
+				return twoDigitToString(firstTwo) + filler + ' ' + twoDigitToString(lastTwo);
+			}
+		}
+	}
+
+	const monthToString = (d) => d.toLocaleDateString("en-EN", {month: 'long'});
+
+	const weekdayToString = (d) => d.toLocaleDateString("en-EN", {weekday: 'long'});
+
+	const singleDigitOrdinalToString = (number) => {
+		const o = number % 10;
+		switch (o) {
+			case 1:
+				return 'first';
+			case 2:
+				return 'second';
+			case 3:
+				return 'third';
+			case 4:
+				return 'fourth';
+			case 5:
+				return 'fifth';
+			case 6:
+				return 'sixth';
+			case 7:
+				return 'seventh'
+			case 8:
+				return 'eighth';
+			case 9:
+				return 'ninth'
+		}
+	}
+
+	const dayToString = (d) => {
+		const day = d.getDate();
+		switch (day) {
+			case 10:
+				return 'tenth';
+			case 11:
+				return 'eleventh';
+			case 12:
+				return 'twelfth';
+			case 13:
+				return 'thirteenth';
+			case 14:
+			case 15:
+			case 16:
+			case 17:
+			case 18:
+			case 19:
+				return oneDigitToString(day) + 'teenth';
+			case 20:
+				return 'twentieth';
+			case 30:
+				return 'thirtieth';
+			default:
+				return tensToString(day) + singleDigitOrdinalToString(day);
+		}
+	}
+
+	const dateToString = (d) => {
+		return `${weekdayToString(d)}, the ${dayToString(d)} of ${monthToString(d)}, ${yearToString(d)}`;
+	}
+
+	const selector = document.getElementById('selector');
+	const today = new Date();
+	const dates = [];
+	for (let i = 0; i < 365 * 50; i++) {
+		const d = new Date(today);
+		d.setDate(today.getDate() - i);
+		const value = d.toISOString().slice(0, 10); // YYYY-MM-DD
+		const label = dateToString(d);
+		dates.push({value, label});
+	}
+	dates.sort((a, b) => a.label.localeCompare(b.label, 'en-EN')).forEach(({value, label}) =>
+		selector.appendChild(new Option(label, value)));
+</script>
+</body>
 </html>
