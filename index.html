@@ -4,17 +4,77 @@
     <meta charset="UTF-8"/>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>bad-date-picker</title>
+    <title>Alphabetically sorted date picker</title>
+    <style>
+		body {
+			font-family: system-ui, sans-serif;
+			font-weight: normal;
+            background: #f6f8fa;
+			color: #222;
+		}
+
+		main {
+			max-width: 400px;
+			margin: 48px auto;
+			background: #fff;
+			border-radius: 12px;
+			box-shadow: 0 4px 24px rgba();
+			padding: 32px 24px 24px 24px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+			font-weight: 500;
+		}
+
+		select {
+			width: 100%;
+			padding: 10px 14px;
+			border-radius: 6px;
+			border: 1px solid #d1d5da;
+			font-size: 1rem;
+			background: #f6f8fa;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+			transition: border-color 0.2s, box-shadow 0.2s;
+			margin-bottom: 20px;
+			appearance: none;
+			outline: none;
+		}
+
+		select:focus {
+			border-color: #0366d6;
+			box-shadow: 0 0 0 2px #0366d633;
+			background: #fff;
+		}
+
+		option {
+			font-size: 1rem;
+		}
+
+		p {
+			margin: 0 0 12px 0;
+			text-align: center;
+		}
+
+		#selected {
+			font-weight: bold;
+			color: #0366d6;
+		}
+    </style>
 </head>
 <body>
-<select id="selector" onchange="selected.innerHTML = this.value">
-    <option>Select a date</option>
-</select>
-<p style="font-size: small">(For your convenience the dates are sorted alphabetically)</p>
-<p>Selected date: <span id="selected"></span></p>
+<main>
+    <label for="selector">Pick a date:</label>
+    <select id="selector" onchange="selected.innerHTML = this.value">
+        <option></option>
+    </select>
+    <p style="font-size: small">(For your convenience the dates are sorted alphabetically)</p>
+    <p>Selected date: <span id="selected"></span></p>
+</main>
 
 <script>
-    console.log("Do check the source! It is not minified and all in one file for your convenience.");
+	console.log("Do check the source! It is not minified and all in one file for your convenience.");
 	const oneDigitToString = (number) => {
 		o = number % 10;
 		switch (o) {
