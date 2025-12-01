@@ -6,7 +6,7 @@ This is my submission for the Bad UX World Cup 2025 https://badux.lol/
 
 An alphabetically sorted date picker for any date of the last 50 years.
 
-Try it out here: [holistic-developer.github.io/bad-date-picker/](https://holistic-developer.github.io/bad-date-picker/) 
+Try it out here: [andreas-taranetz.github.io/bad-date-picker/](https://andreas-taranetz.github.io/bad-date-picker/) 
 
 The idea is to create a date picker that is as bad as possible to use.
 
